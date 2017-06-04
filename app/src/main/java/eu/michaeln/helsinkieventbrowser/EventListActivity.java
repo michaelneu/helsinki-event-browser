@@ -64,7 +64,6 @@ public class EventListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh_event_list:
-                swipeRefreshLayout.setRefreshing(true);
                 updateEvents();
 
                 return true;
@@ -74,6 +73,8 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     private void updateEvents() {
+        swipeRefreshLayout.setRefreshing(true);
+
         api.getEvents(new Consumer<PaginatedResult<Event>>() {
             @Override
             public void accept(PaginatedResult<Event> eventPaginatedResult) {
