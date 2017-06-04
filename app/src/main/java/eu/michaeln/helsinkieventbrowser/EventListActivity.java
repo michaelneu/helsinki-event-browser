@@ -1,6 +1,8 @@
 package eu.michaeln.helsinkieventbrowser;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,7 @@ import android.widget.ListView;
 public class EventListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton searchFAB;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ListView eventsListView;
 
     @Override
@@ -19,9 +22,13 @@ public class EventListActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         searchFAB = (FloatingActionButton)findViewById(R.id.search_fab);
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         eventsListView = (ListView)findViewById(R.id.events_list);
 
         setSupportActionBar(toolbar);
+
+        final int refreshIndicatorColor = ContextCompat.getColor(this, R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeColors(refreshIndicatorColor);
     }
 
     @Override
