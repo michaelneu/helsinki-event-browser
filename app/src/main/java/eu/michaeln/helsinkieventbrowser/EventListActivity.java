@@ -1,13 +1,15 @@
 package eu.michaeln.helsinkieventbrowser;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ListView;
+
+import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 
 public class EventListActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -29,6 +31,9 @@ public class EventListActivity extends AppCompatActivity {
 
         final int refreshIndicatorColor = ContextCompat.getColor(this, R.color.colorPrimary);
         swipeRefreshLayout.setColorSchemeColors(refreshIndicatorColor);
+
+        final SnackbarVolleyErrorNotifier notifier = new SnackbarVolleyErrorNotifier(swipeRefreshLayout);
+        final HelsinkiLinkedEventsApi api = new HelsinkiLinkedEventsApi(getApplicationContext(), notifier);
     }
 
     @Override
