@@ -4,4 +4,6 @@
     <string name="splash_app_name">Helsinki\nEvents</string>
     <string name="refresh_events">Refresh events</string>
     <string name="error_network_connection">Network error</string>
+    <string name="search_results">Search results</string>
+    <string name="search">Search</string>
 </resources>

@@ -1,13 +1,17 @@
 package eu.michaeln.helsinkieventbrowser;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.function.Consumer;
@@ -37,6 +41,25 @@ public class EventListActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        final ComponentName callingActivity = getCallingActivity();
+
+        if (callingActivity != null && SearchActivity.class.equals(callingActivity.getClass())) {
+            final ActionBar actionBar = getSupportActionBar();
+
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.search_results);
+
+            searchFAB.setVisibility(View.GONE);
+        }
+
+        searchFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchActivityIntent = new Intent(EventListActivity.this, SearchActivity.class);
+                startActivity(searchActivityIntent);
+            }
+        });
+
         final int refreshIndicatorColor = ContextCompat.getColor(this, R.color.colorPrimary);
         swipeRefreshLayout.setColorSchemeColors(refreshIndicatorColor);
 
@@ -51,6 +74,13 @@ public class EventListActivity extends AppCompatActivity {
         });
 
         updateEvents();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+
+        return true;
     }
 
     @Override
