@@ -39,11 +39,11 @@ public final class Event {
         return offers;
     }
 
-    public Date getStart_time() {
+    public Date getStartTime() {
         return start_time;
     }
 
-    public Date getEnd_time() {
+    public Date getEndTime() {
         return end_time;
     }
 }

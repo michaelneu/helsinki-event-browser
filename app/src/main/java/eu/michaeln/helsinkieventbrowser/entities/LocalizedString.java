@@ -17,6 +17,14 @@ public final class LocalizedString {
         return en;
     }
 
+    private String coalesce(String a, String b) {
+        if (a == null) {
+            return b;
+        } else {
+            return a;
+        }
+    }
+
     public String resolve() {
         final Locale currentLocale = Locale.getDefault();
         final String language = currentLocale.getLanguage();
@@ -27,13 +35,13 @@ public final class LocalizedString {
     public String resolve(String locale) {
         switch (locale) {
             case "fi":
-                return getFi();
+                return coalesce(getFi(), coalesce(getEn(), getSv()));
 
             case "sv":
-                return getSv();
+                return coalesce(getSv(), coalesce(getEn(), getFi()));
 
             default:
-                return getEn();
+                return coalesce(getEn(), coalesce(getFi(), getSv()));
         }
     }
 }
