@@ -2,4 +2,5 @@
     <string name="app_name">Helsinki Event Browser</string>
     <string name="app_creator">Michael Neu</string>
     <string name="splash_app_name">Helsinki\nEvents</string>
+    <string name="refresh_events">Refresh events</string>
 </resources>
