@@ -3,4 +3,8 @@
     <item
         android:id="@+id/refresh_event_list"
         android:title="@string/refresh_events" />
+
+    <item
+        android:id="@+id/show_about_activity"
+        android:title="@string/about" />
 </menu>

@@ -97,6 +97,12 @@ public class EventListActivity extends AppCompatActivity {
                 updateEvents();
 
                 return true;
+
+            case R.id.show_about_activity:
+                final Intent aboutActivityIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutActivityIntent);
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
