@@ -15,7 +15,7 @@
         \n
         \n
 
-        Implemented features of the project specification:
+        The app implements all features from the specification:
         \n
         \n
 
@@ -40,7 +40,7 @@
         7)\t Use pagination of the API to display all elements
         \n
 
-        8)\t Show a splash screen with the developer's name
+        8)\t Show a splash screen with the developer\'s name
         \n
 
         9)\t Contains an About activity
