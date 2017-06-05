@@ -56,6 +56,18 @@ public class SearchActivity extends AppCompatActivity {
                 api.autoCompleteEvents(text, consumer);
             }
         };
+        new AutoCompleteTextChangeListener(keyword, this) {
+            @Override
+            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
+                api.autoCompleteKeywords(text, consumer);
+            }
+        };
+        new AutoCompleteTextChangeListener(place, this) {
+            @Override
+            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
+                api.autoCompletePlaces(text, consumer);
+            }
+        };
 
         calendar = Calendar.getInstance();
 
