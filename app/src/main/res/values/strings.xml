@@ -7,4 +7,42 @@
     <string name="search_results">Search results</string>
     <string name="search">Search</string>
     <string name="about">About</string>
+    <string name="about_content">
+        This application is the final project of the course "App Development for Android Smartphones"
+        at the OTH Regensburg. It\'s built using only basic Android and support library features.
+        The displayed events are queried using the linked events API provided by the city of Helsinki.
+        \n
+        \n
+        \n
+
+        Implemented features of the project specification:
+        \n
+        \n
+
+        1)\t Keyword based search
+        \n
+
+        2)\t Autocomplete in search
+        \n
+
+        3)\t Custom adapters
+        \n
+
+        4)\t Detailed information about events
+        \n
+
+        5)\t Show event location on a map
+        \n
+
+        6)\t Show images of the event
+        \n
+
+        7)\t Use pagination of the API to display all elements
+        \n
+
+        8)\t Show a splash screen with the developer's name
+        \n
+
+        9)\t Contains an About activity
+    </string>
 </resources>
