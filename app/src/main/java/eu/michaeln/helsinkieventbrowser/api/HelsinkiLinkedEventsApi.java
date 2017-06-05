@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 import eu.michaeln.helsinkieventbrowser.ErrorNotifier;
+import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
 import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.entities.PaginatedResult;
 
@@ -33,12 +34,13 @@ public final class HelsinkiLinkedEventsApi extends Api {
     private static final String BASE_URL = "https://api.hel.fi/linkedevents/v1";
     private static final Gson JSON_DESERIALIZER = new Gson();
 
-    private final Type paginatedEventsType;
+    private final Type paginatedEventsType, paginatedAutoCompleteItemsType;
 
     public HelsinkiLinkedEventsApi(Context context, ErrorNotifier<VolleyError> errorNotifier) {
         super(context, errorNotifier, BASE_URL);
 
         paginatedEventsType = new TypeToken<PaginatedResult<Event>>(){ }.getType();
+        paginatedAutoCompleteItemsType = new TypeToken<PaginatedResult<AutoCompleteItem>>(){ }.getType();
     }
 
     public void getEvents(@NonNull final Consumer<PaginatedResult<Event>> eventConsumer) {
@@ -48,6 +50,17 @@ public final class HelsinkiLinkedEventsApi extends Api {
                 final PaginatedResult<Event> result = JSON_DESERIALIZER.fromJson(response, paginatedEventsType);
 
                 eventConsumer.accept(result);
+            }
+        });
+    }
+
+    public void autoCompleteEvents(String query, @NonNull final Consumer<AutoCompleteItem[]> itemsConsumer) {
+        call("/search/?type=event&input=" + query, new CheckedConsumer<String, JSONException>() {
+            @Override
+            public void accept(String response) throws JSONException {
+                final PaginatedResult<AutoCompleteItem> items = JSON_DESERIALIZER.fromJson(response, paginatedAutoCompleteItemsType);
+
+                itemsConsumer.accept(items.getData());
             }
         });
     }

@@ -15,8 +15,14 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.function.Consumer;
+
+import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
+import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
+import eu.michaeln.helsinkieventbrowser.entities.LocalizedString;
 
 public class SearchActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -41,6 +47,15 @@ public class SearchActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.search);
+
+        final HelsinkiLinkedEventsApi api = new HelsinkiLinkedEventsApi(getApplicationContext(), null);
+
+        new AutoCompleteTextChangeListener(event) {
+            @Override
+            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
+                api.autoCompleteEvents(text, consumer);
+            }
+        };
 
         calendar = Calendar.getInstance();
 
