@@ -1,8 +1,11 @@
 package eu.michaeln.helsinkieventbrowser;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import java.util.ArrayList;
@@ -13,10 +16,13 @@ import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
 
 public abstract class AutoCompleteTextChangeListener implements TextWatcher {
     private final AutoCompleteTextView editText;
+    private final Context context;
 
-    public AutoCompleteTextChangeListener(@NonNull AutoCompleteTextView textView) {
+    public AutoCompleteTextChangeListener(@NonNull AutoCompleteTextView textView, Context context) {
         editText = textView;
         editText.addTextChangedListener(this);
+
+        this.context = context;
     }
 
     @Override
@@ -34,7 +40,18 @@ public abstract class AutoCompleteTextChangeListener implements TextWatcher {
             textChanged(text, new Consumer<AutoCompleteItem[]>() {
                 @Override
                 public void accept(AutoCompleteItem[] items) {
-                    final AutoCompleteItemAdapter adapter = new AutoCompleteItemAdapter(editText.getContext(), items);
+                    final ArrayList<String> results = new ArrayList<>();
+
+                    // why does this work, but resolving the text in the adapter doesn't?!
+                    for (int i = 0; i < items.length; i++) {
+                        final String item = items[i].getText().resolve();
+
+                        if (!results.contains(item)) {
+                            results.add(item);
+                        }
+                    }
+
+                    final AutoCompleteItemAdapter adapter = new AutoCompleteItemAdapter(context, results);
 
                     editText.setAdapter(adapter);
                 }

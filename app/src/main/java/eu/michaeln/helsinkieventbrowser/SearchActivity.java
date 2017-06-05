@@ -50,7 +50,7 @@ public class SearchActivity extends AppCompatActivity {
 
         final HelsinkiLinkedEventsApi api = new HelsinkiLinkedEventsApi(getApplicationContext(), null);
 
-        new AutoCompleteTextChangeListener(event) {
+        new AutoCompleteTextChangeListener(event, this) {
             @Override
             protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
                 api.autoCompleteEvents(text, consumer);
