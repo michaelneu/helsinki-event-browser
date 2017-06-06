@@ -3,6 +3,7 @@ package eu.michaeln.helsinkieventbrowser.api;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -54,6 +55,8 @@ public abstract class Api {
                 notifyError(error);
             }
         });
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         server.addToRequestQueue(request);
     }
