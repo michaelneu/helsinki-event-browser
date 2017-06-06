@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -131,6 +132,21 @@ public class EventListActivity extends AppCompatActivity {
         };
 
         updateEvents();
+
+        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                final Event event = events[position];
+
+                if (event != null) {
+                    final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
+
+                    detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_ID, event.getId());
+
+                    startActivity(detailsActivityIntent);
+                }
+            }
+        });
     }
 
     @Override
