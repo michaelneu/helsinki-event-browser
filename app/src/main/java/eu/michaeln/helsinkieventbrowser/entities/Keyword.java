@@ -16,4 +16,9 @@ public class Keyword {
     public LocalizedString getName() {
         return name;
     }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode() * 37;
+    }
 }
