@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.fragments.EventDetailsFragment;
+import eu.michaeln.helsinkieventbrowser.fragments.EventImagesFragment;
 import eu.michaeln.helsinkieventbrowser.fragments.EventLocationFragment;
 import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
@@ -35,7 +36,7 @@ public class DetailsPagerAdapter extends FragmentPagerAdapter {
                 break;
 
             case FRAGMENT_IMAGES:
-                fragment = new EventDetailsFragment();
+                fragment = new EventImagesFragment();
                 break;
 
             default:
