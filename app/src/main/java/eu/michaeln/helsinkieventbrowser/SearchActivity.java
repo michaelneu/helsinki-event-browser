@@ -1,6 +1,7 @@
 package eu.michaeln.helsinkieventbrowser;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,10 @@ import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
 
 public class SearchActivity extends AppCompatActivity {
+    public static final String INTENT_EXTRA_DATE = "date",
+            INTENT_EXTRA_KEYWORD= "keyword",
+            INTENT_EXTRA_PLACE = "place";
+
     private Toolbar toolbar;
     private AutoCompleteTextView keyword, place;
     private TextView date;
@@ -104,7 +109,13 @@ public class SearchActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
+                final Intent displaySearchedListIntent = new Intent(this, EventListActivity.class);
 
+                displaySearchedListIntent.putExtra(INTENT_EXTRA_DATE, new CalendarParcel(calendar));
+                displaySearchedListIntent.putExtra(INTENT_EXTRA_KEYWORD, keyword.getText().toString());
+                displaySearchedListIntent.putExtra(INTENT_EXTRA_PLACE, place.getText().toString());
+
+                startActivity(displaySearchedListIntent);
                 return true;
         }
 

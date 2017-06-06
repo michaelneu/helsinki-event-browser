@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.function.Consumer;
 
 import eu.michaeln.helsinkieventbrowser.adapters.AutoCompleteItemAdapter;
@@ -56,9 +57,9 @@ public class EventListActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        final ComponentName callingActivity = getCallingActivity();
+        final Intent callingIntent = getIntent();
 
-        if (callingActivity != null && SearchActivity.class.equals(callingActivity.getClass())) {
+        if (callingIntent != null && callingIntent.hasExtra(SearchActivity.INTENT_EXTRA_DATE)) {
             final ActionBar actionBar = getSupportActionBar();
 
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -178,7 +179,7 @@ public class EventListActivity extends AppCompatActivity {
     private void updateEvents() {
         swipeRefreshLayout.setRefreshing(true);
 
-        api.getEvents(new Consumer<PaginatedResult<Event>>() {
+        final Consumer<PaginatedResult<Event>> eventResultHandler = new Consumer<PaginatedResult<Event>>() {
             @Override
             public void accept(PaginatedResult<Event> eventPaginatedResult) {
                 events = eventPaginatedResult.getData();
@@ -186,7 +187,21 @@ public class EventListActivity extends AppCompatActivity {
 
                 swipeRefreshLayout.setRefreshing(false);
             }
-        });
+        };
+
+        final Intent callingIntent = getIntent();
+
+        if (callingIntent != null && callingIntent.hasExtra(SearchActivity.INTENT_EXTRA_DATE)) {
+            final CalendarParcel parcel = callingIntent.getParcelableExtra(SearchActivity.INTENT_EXTRA_DATE);
+            final Calendar date = parcel.getCalendar();
+
+            final String keyword = callingIntent.getStringExtra(SearchActivity.INTENT_EXTRA_KEYWORD),
+                    place = callingIntent.getStringExtra(SearchActivity.INTENT_EXTRA_PLACE);
+
+            api.searchEvents(date, place, keyword, eventResultHandler);
+        } else {
+            api.getEvents(eventResultHandler);
+        }
     }
 
     private void updateFilteredEventList() {
