@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,13 +113,20 @@ public class SearchActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
-                final Intent displaySearchedListIntent = new Intent(this, EventListActivity.class);
+                final String keywordText = keyword.getText().toString().trim();
 
-                displaySearchedListIntent.putExtra(INTENT_EXTRA_DATE, new CalendarParcel(calendar));
-                displaySearchedListIntent.putExtra(INTENT_EXTRA_KEYWORD, keyword.getText().toString());
-                displaySearchedListIntent.putExtra(INTENT_EXTRA_PLACE, place.getText().toString());
+                if (keywordText.length() == 0) {
+                    Toast.makeText(this, "Must at least provide 1 keyword", Toast.LENGTH_SHORT).show();
+                } else {
+                    final Intent displaySearchedListIntent = new Intent(this, EventListActivity.class);
 
-                startActivity(displaySearchedListIntent);
+                    displaySearchedListIntent.putExtra(INTENT_EXTRA_DATE, new CalendarParcel(calendar));
+                    displaySearchedListIntent.putExtra(INTENT_EXTRA_KEYWORD, keywordText);
+                    displaySearchedListIntent.putExtra(INTENT_EXTRA_PLACE, place.getText().toString());
+
+                    startActivity(displaySearchedListIntent);
+                }
+
                 return true;
         }
 
