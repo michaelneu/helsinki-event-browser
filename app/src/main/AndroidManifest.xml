@@ -17,7 +17,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,10 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EventListActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".EventDetailsActivity"></activity>
+        <activity android:name=".activities.EventListActivity" />
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.AboutActivity" />
+        <activity android:name=".activities.EventDetailsActivity"></activity>
     </application>
 
 </manifest>

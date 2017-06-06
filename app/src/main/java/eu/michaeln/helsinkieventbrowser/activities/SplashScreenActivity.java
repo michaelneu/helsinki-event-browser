@@ -1,4 +1,4 @@
-package eu.michaeln.helsinkieventbrowser;
+package eu.michaeln.helsinkieventbrowser.activities;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -6,6 +6,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import eu.michaeln.helsinkieventbrowser.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 3000;

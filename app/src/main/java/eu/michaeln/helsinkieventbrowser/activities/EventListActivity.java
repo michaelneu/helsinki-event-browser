@@ -1,4 +1,4 @@
-package eu.michaeln.helsinkieventbrowser;
+package eu.michaeln.helsinkieventbrowser.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.function.Consumer;
 
+import eu.michaeln.helsinkieventbrowser.AutoCompleteTextChangeListener;
+import eu.michaeln.helsinkieventbrowser.R;
+import eu.michaeln.helsinkieventbrowser.SnackbarVolleyErrorNotifier;
 import eu.michaeln.helsinkieventbrowser.adapters.EventListAdapter;
 import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;

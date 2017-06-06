@@ -1,4 +1,4 @@
-package eu.michaeln.helsinkieventbrowser;
+package eu.michaeln.helsinkieventbrowser.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import eu.michaeln.helsinkieventbrowser.AutoCompleteTextChangeListener;
+import eu.michaeln.helsinkieventbrowser.R;
 import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
 import eu.michaeln.helsinkieventbrowser.parcels.CalendarParcel;

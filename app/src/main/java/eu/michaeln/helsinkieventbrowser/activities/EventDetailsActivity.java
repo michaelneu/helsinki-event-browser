@@ -1,4 +1,4 @@
-package eu.michaeln.helsinkieventbrowser;
+package eu.michaeln.helsinkieventbrowser.activities;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import eu.michaeln.helsinkieventbrowser.R;
 import eu.michaeln.helsinkieventbrowser.adapters.DetailsPagerAdapter;
 import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
