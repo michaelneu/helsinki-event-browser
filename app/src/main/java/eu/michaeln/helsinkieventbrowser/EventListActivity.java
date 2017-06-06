@@ -12,13 +12,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import eu.michaeln.helsinkieventbrowser.adapters.AutoCompleteItemAdapter;
 import eu.michaeln.helsinkieventbrowser.adapters.EventListAdapter;
 import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
+import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
 import eu.michaeln.helsinkieventbrowser.entities.Event;
+import eu.michaeln.helsinkieventbrowser.entities.Keyword;
+import eu.michaeln.helsinkieventbrowser.entities.Location;
 import eu.michaeln.helsinkieventbrowser.entities.PaginatedResult;
 
 public class EventListActivity extends AppCompatActivity {
@@ -26,6 +33,10 @@ public class EventListActivity extends AppCompatActivity {
     private FloatingActionButton searchFAB;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView eventsListView;
+
+    private LinearLayout eventFilter;
+    private AutoCompleteTextView keywordFilter, placeFilter;
+    private Event[] events;
 
     private HelsinkiLinkedEventsApi api;
 
@@ -38,6 +49,10 @@ public class EventListActivity extends AppCompatActivity {
         searchFAB = (FloatingActionButton)findViewById(R.id.search_fab);
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         eventsListView = (ListView)findViewById(R.id.events_list);
+
+        eventFilter = (LinearLayout)findViewById(R.id.event_filter);
+        keywordFilter = (AutoCompleteTextView)findViewById(R.id.keyword);
+        placeFilter = (AutoCompleteTextView)findViewById(R.id.place);
 
         setSupportActionBar(toolbar);
 
@@ -73,6 +88,47 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
+        new AutoCompleteTextChangeListener(keywordFilter, this) {
+            @Override
+            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
+                if (events != null) {
+                    ArrayList<AutoCompleteItem> items = new ArrayList<>();
+
+                    for (Event event : events) {
+                        for (Keyword keyword : event.getKeywords()) {
+                            items.add(new AutoCompleteItem(keyword.getName()));
+                        }
+                    }
+
+                    AutoCompleteItem[] itemsAsArray = items.toArray(new AutoCompleteItem[items.size()]);
+                    consumer.accept(itemsAsArray);
+                }
+
+                updateFilteredEventList();
+            }
+        };
+
+        new AutoCompleteTextChangeListener(placeFilter, this) {
+
+            @Override
+            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
+                if (events != null) {
+                    ArrayList<AutoCompleteItem> items = new ArrayList<>();
+
+                    for (Event event : events) {
+                        final Location location = event.getLocation();
+
+                        items.add(new AutoCompleteItem(location.getName()));
+                    }
+
+                    AutoCompleteItem[] itemsAsArray = items.toArray(new AutoCompleteItem[items.size()]);
+                    consumer.accept(itemsAsArray);
+                }
+
+                updateFilteredEventList();
+            }
+        };
+
         updateEvents();
     }
 
@@ -98,6 +154,17 @@ public class EventListActivity extends AppCompatActivity {
 
                 return true;
 
+            case R.id.filter_event_list:
+                if (eventFilter.getVisibility() == View.VISIBLE) {
+                    item.setTitle(R.string.show_event_filters);
+                    eventFilter.setVisibility(View.GONE);
+                } else {
+                    item.setTitle(R.string.hide_event_filters);
+                    eventFilter.setVisibility(View.VISIBLE);
+                }
+
+                return true;
+
             case R.id.show_about_activity:
                 final Intent aboutActivityIntent = new Intent(this, AboutActivity.class);
                 startActivity(aboutActivityIntent);
@@ -114,11 +181,42 @@ public class EventListActivity extends AppCompatActivity {
         api.getEvents(new Consumer<PaginatedResult<Event>>() {
             @Override
             public void accept(PaginatedResult<Event> eventPaginatedResult) {
-                EventListAdapter adapter = new EventListAdapter(EventListActivity.this, eventPaginatedResult.getData());
-                eventsListView.setAdapter(adapter);
+                events = eventPaginatedResult.getData();
+                updateFilteredEventList();
 
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    private void updateFilteredEventList() {
+        if (events != null) {
+            final ArrayList<Event> filteredEvents = new ArrayList<>();
+
+            for (Event event : events) {
+                final String keyword = keywordFilter.getText().toString(),
+                        place = placeFilter.getText().toString();
+
+                boolean matchesKeyword = keyword.length() == 0;
+
+                for (Keyword eventKeyword : event.getKeywords()) {
+                    if (eventKeyword.getName().containsInAnyLanguageWithoutCase(keyword)) {
+                        matchesKeyword = true;
+                        break;
+                    }
+                }
+
+                boolean matchesPlace = place.length() == 0 || event.getLocation().getName().containsInAnyLanguageWithoutCase(place);
+
+                if (matchesKeyword && matchesPlace) {
+                    filteredEvents.add(event);
+                }
+            }
+
+            final Event[] filteredEventsAsArray = filteredEvents.toArray(new Event[filteredEvents.size()]);
+            final EventListAdapter adapter = new EventListAdapter(EventListActivity.this, filteredEventsAsArray);
+
+            eventsListView.setAdapter(adapter);
+        }
     }
 }

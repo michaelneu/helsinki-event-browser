@@ -35,7 +35,7 @@ public final class HelsinkiLinkedEventsApi extends Api {
     }
 
     public void getEvents(@NonNull final Consumer<PaginatedResult<Event>> eventConsumer) {
-        call("/event?include=location", new CheckedConsumer<String, JSONException>() {
+        call("/event?include=location,keywords", new CheckedConsumer<String, JSONException>() {
             @Override
             public void accept(String response) throws JSONException {
                 final PaginatedResult<Event> result = JSON_DESERIALIZER.fromJson(response, paginatedEventsType);
@@ -77,10 +77,9 @@ public final class HelsinkiLinkedEventsApi extends Api {
 
                 for (Keyword keyword : items.getData()) {
                     for (String alternative : keyword.getAlternativeLabels()) {
-                        final String id = keyword.getId();
                         final LocalizedString text = new LocalizedString(alternative, alternative, alternative);
 
-                        autoCompleteItems.add(new AutoCompleteItem(id, text));
+                        autoCompleteItems.add(new AutoCompleteItem(text));
                     }
                 }
 

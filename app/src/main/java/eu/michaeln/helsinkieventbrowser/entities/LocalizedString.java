@@ -52,4 +52,14 @@ public final class LocalizedString {
                 return coalesce(getEn(), coalesce(getFi(), getSv()));
         }
     }
+
+    public boolean containsInAnyLanguageWithoutCase(String text) {
+        text = text.toLowerCase();
+
+        boolean inFi = fi != null && fi.toLowerCase().contains(text),
+                inSv = sv != null && sv.toLowerCase().contains(text),
+                inEn = en != null && en.toLowerCase().contains(text);
+
+        return inFi || inSv || inEn;
+    }
 }

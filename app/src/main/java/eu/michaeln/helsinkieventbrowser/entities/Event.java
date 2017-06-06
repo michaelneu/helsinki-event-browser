@@ -15,6 +15,8 @@ public final class Event {
 
     private Date start_time, end_time;
 
+    private Keyword[] keywords;
+
     public String getId() {
         return id;
     }
@@ -45,5 +47,9 @@ public final class Event {
 
     public Date getEndTime() {
         return end_time;
+    }
+
+    public Keyword[] getKeywords() {
+        return keywords;
     }
 }

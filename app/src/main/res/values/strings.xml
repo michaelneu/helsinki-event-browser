@@ -45,4 +45,6 @@
 
         9)\t Contains an About activity
     </string>
+    <string name="show_event_filters">Show event filters</string>
+    <string name="hide_event_filters">Hide event filters</string>
 </resources>
