@@ -39,6 +39,7 @@ public class EventListActivity extends AppCompatActivity {
     private FloatingActionButton searchFAB;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView eventsRecyclerView;
+    private EventListAdapter eventListAdapter;
 
     private LinearLayout eventFilter;
     private AutoCompleteTextView keywordFilter, placeFilter;
@@ -56,8 +57,24 @@ public class EventListActivity extends AppCompatActivity {
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         eventsRecyclerView = (RecyclerView) findViewById(R.id.events_list);
 
+        eventListAdapter = new EventListAdapter(new Event[0], new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                final Event event = events[position];
+
+                if (event != null) {
+                    final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
+
+                    detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
+
+                    startActivity(detailsActivityIntent);
+                }
+            }
+        });
+
         eventsRecyclerView.setHasFixedSize(true);
         eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventsRecyclerView.setAdapter(eventListAdapter);
 
         eventFilter = (LinearLayout)findViewById(R.id.event_filter);
         keywordFilter = (AutoCompleteTextView)findViewById(R.id.keyword);
@@ -237,22 +254,8 @@ public class EventListActivity extends AppCompatActivity {
             }
 
             final Event[] filteredEventsAsArray = filteredEvents.toArray(new Event[filteredEvents.size()]);
-            final EventListAdapter adapter = new EventListAdapter(filteredEventsAsArray, new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    final Event event = events[position];
 
-                    if (event != null) {
-                        final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
-
-                        detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
-
-                        startActivity(detailsActivityIntent);
-                    }
-                }
-            });
-
-            eventsRecyclerView.setAdapter(adapter);
+            eventListAdapter.setEvents(filteredEventsAsArray);
         }
     }
 }

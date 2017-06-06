@@ -48,13 +48,19 @@ public final class EventListAdapter extends RecyclerView.Adapter<EventListAdapte
     }
 
     private final AdapterView.OnItemClickListener listener;
-    private final Event[] events;
     private final SimpleDateFormat dateFormatter;
+    private Event[] events;
 
     public EventListAdapter(Event[] data, AdapterView.OnItemClickListener clickListener) {
         listener = clickListener;
         events = data;
         dateFormatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm", Locale.ENGLISH);
+    }
+
+    public void setEvents(Event[] data) {
+        events = data;
+
+        notifyDataSetChanged();
     }
 
     @Override
