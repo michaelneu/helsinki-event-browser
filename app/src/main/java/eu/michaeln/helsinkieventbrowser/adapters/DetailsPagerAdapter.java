@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import eu.michaeln.helsinkieventbrowser.fragments.EventDetailsFragment;
+import eu.michaeln.helsinkieventbrowser.fragments.LocationFragment;
 
 public class DetailsPagerAdapter extends FragmentPagerAdapter {
     private final static int FRAGMENT_DETAILS = 0,
@@ -23,7 +24,7 @@ public class DetailsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case FRAGMENT_LOCATION:
-                return new EventDetailsFragment();
+                return new LocationFragment();
 
             case FRAGMENT_IMAGES:
                 return new EventDetailsFragment();
