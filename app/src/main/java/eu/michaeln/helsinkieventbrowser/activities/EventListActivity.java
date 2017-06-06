@@ -43,7 +43,9 @@ public class EventListActivity extends AppCompatActivity {
 
     private LinearLayout eventFilter;
     private AutoCompleteTextView keywordFilter, placeFilter;
+
     private Event[] events;
+    private String previousLink, nextLink, currentlyViewedUrl;
 
     private HelsinkiLinkedEventsApi api;
 
@@ -60,7 +62,7 @@ public class EventListActivity extends AppCompatActivity {
         eventListAdapter = new EventListAdapter(new Event[0], new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                final Event event = events[position];
+                final Event event = eventListAdapter.getEvents()[position];
 
                 if (event != null) {
                     final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
@@ -68,6 +70,12 @@ public class EventListActivity extends AppCompatActivity {
                     detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
 
                     startActivity(detailsActivityIntent);
+                } else if (position == 0 && previousLink != null) {
+                    currentlyViewedUrl = previousLink;
+                    updateEvents();
+                } else if (nextLink != null) {
+                    currentlyViewedUrl = nextLink;
+                    updateEvents();
                 }
             }
         });
@@ -203,11 +211,15 @@ public class EventListActivity extends AppCompatActivity {
 
     private void updateEvents() {
         swipeRefreshLayout.setRefreshing(true);
+        eventListAdapter.setEvents(new Event[0]);
 
         final Consumer<PaginatedResult<Event>> eventResultHandler = new Consumer<PaginatedResult<Event>>() {
             @Override
             public void accept(PaginatedResult<Event> eventPaginatedResult) {
                 events = eventPaginatedResult.getData();
+                previousLink = eventPaginatedResult.getMeta().getPrevious();
+                nextLink = eventPaginatedResult.getMeta().getNext();
+
                 updateFilteredEventList();
 
                 swipeRefreshLayout.setRefreshing(false);
@@ -216,7 +228,9 @@ public class EventListActivity extends AppCompatActivity {
 
         final Intent callingIntent = getIntent();
 
-        if (callingIntent != null && callingIntent.hasExtra(SearchActivity.INTENT_EXTRA_DATE)) {
+        if (currentlyViewedUrl != null) {
+            api.searchEventsUsingUrl(currentlyViewedUrl, eventResultHandler);
+        } else if (callingIntent != null && callingIntent.hasExtra(SearchActivity.INTENT_EXTRA_DATE)) {
             final CalendarParcel parcel = callingIntent.getParcelableExtra(SearchActivity.INTENT_EXTRA_DATE);
             final Calendar date = parcel.getCalendar();
 
@@ -251,6 +265,14 @@ public class EventListActivity extends AppCompatActivity {
                 if (matchesKeyword && matchesPlace) {
                     filteredEvents.add(event);
                 }
+            }
+
+            if (previousLink != null) {
+                filteredEvents.add(0, null);
+            }
+
+            if (nextLink != null) {
+                filteredEvents.add(null);
             }
 
             final Event[] filteredEventsAsArray = filteredEvents.toArray(new Event[filteredEvents.size()]);

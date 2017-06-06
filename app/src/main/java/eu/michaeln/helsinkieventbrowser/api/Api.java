@@ -17,15 +17,12 @@ import org.json.JSONObject;
 import eu.michaeln.helsinkieventbrowser.ErrorNotifier;
 
 public abstract class Api {
-    private final String base;
-
     private final VolleySingleton server;
     private final ErrorNotifier<VolleyError> notifier;
 
-    public Api(Context context, ErrorNotifier<VolleyError> errorNotifier, String baseUrl) {
+    public Api(Context context, ErrorNotifier<VolleyError> errorNotifier) {
         server = VolleySingleton.getInstance(context);
         notifier = errorNotifier;
-        base = baseUrl;
     }
 
     private void notifyError(JSONException error) {
@@ -39,8 +36,7 @@ public abstract class Api {
     }
 
     protected void call(String endpoint, @NonNull final CheckedConsumer<String, JSONException> responseConsumer) {
-        final String url = base + endpoint;
-        final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        final StringRequest request = new StringRequest(Request.Method.GET, endpoint, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

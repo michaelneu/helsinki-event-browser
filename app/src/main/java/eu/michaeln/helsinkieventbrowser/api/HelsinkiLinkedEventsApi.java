@@ -37,7 +37,7 @@ public final class HelsinkiLinkedEventsApi extends Api {
     private final Type paginatedEventsType, paginatedLocationsType, paginatedKeywordsType;
 
     public HelsinkiLinkedEventsApi(Context context, ErrorNotifier<VolleyError> errorNotifier) {
-        super(context, errorNotifier, BASE_URL);
+        super(context, errorNotifier);
 
         paginatedEventsType = new TypeToken<PaginatedResult<Event>>(){ }.getType();
         paginatedLocationsType = new TypeToken<PaginatedResult<Location>>(){ }.getType();
@@ -45,7 +45,7 @@ public final class HelsinkiLinkedEventsApi extends Api {
     }
 
     public void getEvents(@NonNull final Consumer<PaginatedResult<Event>> eventConsumer) {
-        call("/event?include=location,keywords", new CheckedConsumer<String, JSONException>() {
+        call(BASE_URL + "/event?include=location,keywords", new CheckedConsumer<String, JSONException>() {
             @Override
             public void accept(String response) throws JSONException {
                 final PaginatedResult<Event> result = JSON_DESERIALIZER.fromJson(response, paginatedEventsType);
@@ -59,7 +59,7 @@ public final class HelsinkiLinkedEventsApi extends Api {
         if (query.length() == 0) {
             locationConsumer.accept(new PaginatedResult<Location>(new Location[0], new MetaInformation()));
         } else {
-            call("/search/?type=place&input=" + query, new CheckedConsumer<String, JSONException>() {
+            call(BASE_URL + "/search/?type=place&input=" + query, new CheckedConsumer<String, JSONException>() {
                 @Override
                 public void accept(String response) throws JSONException {
                     final PaginatedResult<Location> items = JSON_DESERIALIZER.fromJson(response, paginatedLocationsType);
@@ -94,7 +94,7 @@ public final class HelsinkiLinkedEventsApi extends Api {
         } else {
             query = Uri.encode(query);
 
-            call("/keyword?text=" + query, new CheckedConsumer<String, JSONException>() {
+            call(BASE_URL + "/keyword?text=" + query, new CheckedConsumer<String, JSONException>() {
                 @Override
                 public void accept(String response) throws JSONException {
                     final PaginatedResult<Keyword> keywords = JSON_DESERIALIZER.fromJson(response, paginatedKeywordsType);
@@ -163,6 +163,17 @@ public final class HelsinkiLinkedEventsApi extends Api {
         });
     }
 
+    public void searchEventsUsingUrl(String url, @NonNull final Consumer<PaginatedResult<Event>> eventConsumer) {
+        call(url, new CheckedConsumer<String, JSONException>() {
+            @Override
+            public void accept(String response) throws JSONException {
+                final PaginatedResult<Event> result = JSON_DESERIALIZER.fromJson(response, paginatedEventsType);
+
+                eventConsumer.accept(result);
+            }
+        });
+    }
+
     public void searchEvents(final Calendar dateQuery, final String placeQuery, final String keywordQuery, @NonNull final Consumer<PaginatedResult<Event>> eventConsumer) {
         searchPlaces(placeQuery, new Consumer<PaginatedResult<Location>>() {
             @Override
@@ -188,16 +199,10 @@ public final class HelsinkiLinkedEventsApi extends Api {
                         final String keywordIdsAsString = TextUtils.join(",", keywordIds);
 
                         final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        final String date = dateFormatter.format(dateQuery.getTime());
+                        final String date = dateFormatter.format(dateQuery.getTime()),
+                                url = BASE_URL + "/event?include=location,keywords&location=" + locationIdsAsString + "&keyword=" + keywordIdsAsString + "&start=" + date;
 
-                        call("/event?include=location,keywords&location=" + locationIdsAsString + "&keyword=" + keywordIdsAsString + "&start=" + date, new CheckedConsumer<String, JSONException>() {
-                            @Override
-                            public void accept(String response) throws JSONException {
-                                final PaginatedResult<Event> result = JSON_DESERIALIZER.fromJson(response, paginatedEventsType);
-
-                                eventConsumer.accept(result);
-                            }
-                        });
+                        searchEventsUsingUrl(url, eventConsumer);
                     }
                 });
             }
