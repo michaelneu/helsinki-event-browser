@@ -20,25 +20,15 @@ import eu.michaeln.helsinkieventbrowser.adapters.DetailsPagerAdapter;
 import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
-public class LocationFragment extends Fragment implements OnMapReadyCallback {
-    private Event event;
-    private View view;
-
-    @Override
-    public void setArguments(Bundle args) {
-        final EventParcel parcel = args.getParcelable(DetailsPagerAdapter.ARGUMENT_EVENT);
-
-        if (parcel != null) {
-            event = parcel.getEvent();
-        }
+public class LocationFragment extends EventFragmentBase implements OnMapReadyCallback {
+    public LocationFragment() {
+        super(R.layout.fragment_location);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_location, container, false);
-        }
+        view = super.onCreateView(inflater, container, savedInstanceState);
 
         final SupportMapFragment map = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);

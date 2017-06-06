@@ -3,7 +3,6 @@ package eu.michaeln.helsinkieventbrowser.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,33 +13,21 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import eu.michaeln.helsinkieventbrowser.R;
-import eu.michaeln.helsinkieventbrowser.adapters.DetailsPagerAdapter;
-import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.entities.LocalizedString;
 import eu.michaeln.helsinkieventbrowser.entities.Offer;
-import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
-public class EventDetailsFragment extends Fragment {
-    private Event event;
-    private View view;
+public class EventDetailsFragment extends EventFragmentBase {
     private SimpleDateFormat dateFormatter;
 
     public EventDetailsFragment() {
+        super(R.layout.fragment_event_details);
+
         dateFormatter = new SimpleDateFormat("dd.MM.yyy, HH:mm", Locale.ENGLISH);
     }
 
     @Override
-    public void setArguments(Bundle args) {
-        final EventParcel parcel = args.getParcelable(DetailsPagerAdapter.ARGUMENT_EVENT);
-
-        event = parcel.getEvent();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_event_details, container, false);
-        }
+        view = super.onCreateView(inflater, container, savedInstanceState);
 
         final Button moreInformation = (Button)view.findViewById(R.id.more_information);
 
