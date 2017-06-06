@@ -26,7 +26,7 @@ import eu.michaeln.helsinkieventbrowser.entities.LocalizedString;
 
 public class SearchActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private AutoCompleteTextView event, keyword, place;
+    private AutoCompleteTextView keyword, place;
     private TextView date;
 
     private Calendar calendar;
@@ -37,7 +37,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        event = (AutoCompleteTextView)findViewById(R.id.event);
         keyword = (AutoCompleteTextView)findViewById(R.id.keyword);
         place = (AutoCompleteTextView)findViewById(R.id.place);
         date = (TextView)findViewById(R.id.date);
@@ -50,12 +49,6 @@ public class SearchActivity extends AppCompatActivity {
 
         final HelsinkiLinkedEventsApi api = new HelsinkiLinkedEventsApi(getApplicationContext(), null);
 
-        new AutoCompleteTextChangeListener(event, this) {
-            @Override
-            protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
-                api.autoCompleteEvents(text, consumer);
-            }
-        };
         new AutoCompleteTextChangeListener(keyword, this) {
             @Override
             protected void textChanged(String text, Consumer<AutoCompleteItem[]> consumer) {
@@ -115,6 +108,7 @@ public class SearchActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
+
                 return true;
         }
 
