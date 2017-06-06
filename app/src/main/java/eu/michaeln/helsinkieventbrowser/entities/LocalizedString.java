@@ -5,6 +5,14 @@ import java.util.Locale;
 public final class LocalizedString {
     private String fi, sv, en;
 
+    public LocalizedString(String fi, String sv, String en) {
+        this.fi = fi;
+        this.sv = sv;
+        this.en = en;
+    }
+
+    public LocalizedString() { }
+
     public String getFi() {
         return fi;
     }

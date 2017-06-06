@@ -34,7 +34,6 @@ public abstract class Api {
     private void notifyError(VolleyError error) {
         if (notifier != null) {
             notifier.notify(error);
-            throw new RuntimeException(error);
         }
     }
 
