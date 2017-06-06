@@ -51,4 +51,9 @@
     <string name="keyword">Keyword</string>
     <string name="date">Date</string>
     <string name="today">today</string>
+    <string name="more_information">More information</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="free">FREE</string>
+    <string name="offers">Offers</string>
 </resources>

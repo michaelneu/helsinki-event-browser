@@ -7,7 +7,7 @@ public final class Event {
 
     private LocalizedString name;
     private LocalizedString description;
-    private LocalizedString infoUrl;
+    private LocalizedString info_url;
 
     private Location location;
     private Offer[] offers;
@@ -31,7 +31,7 @@ public final class Event {
     }
 
     public LocalizedString getInfoUrl() {
-        return infoUrl;
+        return info_url;
     }
 
     public Location getLocation() {
