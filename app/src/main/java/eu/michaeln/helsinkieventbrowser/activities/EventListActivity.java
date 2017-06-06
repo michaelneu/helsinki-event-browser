@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class EventListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton searchFAB;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ListView eventsListView;
+    private RecyclerView eventsRecyclerView;
 
     private LinearLayout eventFilter;
     private AutoCompleteTextView keywordFilter, placeFilter;
@@ -53,7 +54,10 @@ public class EventListActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         searchFAB = (FloatingActionButton)findViewById(R.id.search_fab);
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
-        eventsListView = (ListView)findViewById(R.id.events_list);
+        eventsRecyclerView = (RecyclerView) findViewById(R.id.events_list);
+
+        eventsRecyclerView.setHasFixedSize(true);
+        eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         eventFilter = (LinearLayout)findViewById(R.id.event_filter);
         keywordFilter = (AutoCompleteTextView)findViewById(R.id.keyword);
@@ -135,21 +139,6 @@ public class EventListActivity extends AppCompatActivity {
         };
 
         updateEvents();
-
-        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                final Event event = events[position];
-
-                if (event != null) {
-                    final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
-
-                    detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
-
-                    startActivity(detailsActivityIntent);
-                }
-            }
-        });
     }
 
     @Override
@@ -248,9 +237,22 @@ public class EventListActivity extends AppCompatActivity {
             }
 
             final Event[] filteredEventsAsArray = filteredEvents.toArray(new Event[filteredEvents.size()]);
-            final EventListAdapter adapter = new EventListAdapter(EventListActivity.this, filteredEventsAsArray);
+            final EventListAdapter adapter = new EventListAdapter(filteredEventsAsArray, new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    final Event event = events[position];
 
-            eventsListView.setAdapter(adapter);
+                    if (event != null) {
+                        final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
+
+                        detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
+
+                        startActivity(detailsActivityIntent);
+                    }
+                }
+            });
+
+            eventsRecyclerView.setAdapter(adapter);
         }
     }
 }
