@@ -14,8 +14,8 @@ public class DetailsPagerAdapter extends FragmentPagerAdapter {
     public static final String ARGUMENT_EVENT = "event";
 
     private static final int FRAGMENT_DETAILS = 0,
-                             FRAGMENT_LOCATION = 1,
-                             FRAGMENT_IMAGES = 2;
+                             FRAGMENT_IMAGES = 1,
+                             FRAGMENT_LOCATION = 2;
 
     private final Event event;
 
