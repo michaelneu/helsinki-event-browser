@@ -126,12 +126,12 @@ public final class HelsinkiLinkedEventsApi extends Api {
     }
 
     public void autoCompleteKeywords(String query, @NonNull final Consumer<AutoCompleteItem[]> itemsConsumer) {
-        searchKeywords(query, new Consumer<PaginatedResult<Keyword>>() {
+        searchAllKeywords(query, new Consumer<Keyword[]>() {
             @Override
-            public void accept(PaginatedResult<Keyword> items) {
+            public void accept(Keyword[] keywords) {
                 ArrayList<AutoCompleteItem> autoCompleteItems = new ArrayList<>();
 
-                for (Keyword keyword : items.getData()) {
+                for (Keyword keyword : keywords) {
                     for (String alternative : keyword.getAlternativeLabels()) {
                         final LocalizedString text = new LocalizedString(alternative, alternative, alternative);
 
