@@ -44,7 +44,12 @@ public class EventDetailsFragment extends EventFragmentBase {
         location.setText(event.getLocation().getName().resolve());
         description.setText(event.getDescription().resolve());
         from.setText(dateFormatter.format(event.getStartTime()));
-        to.setText(dateFormatter.format(event.getEndTime()));
+
+        if (event.getEndTime() == null) {
+            to.setText("-");
+        } else {
+            to.setText(dateFormatter.format(event.getEndTime()));
+        }
 
         final Offer[] eventOffers = event.getOffers();
 

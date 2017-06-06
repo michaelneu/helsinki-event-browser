@@ -1,6 +1,7 @@
 package eu.michaeln.helsinkieventbrowser.api;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +27,7 @@ import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.entities.Keyword;
 import eu.michaeln.helsinkieventbrowser.entities.LocalizedString;
 import eu.michaeln.helsinkieventbrowser.entities.Location;
+import eu.michaeln.helsinkieventbrowser.entities.MetaInformation;
 import eu.michaeln.helsinkieventbrowser.entities.PaginatedResult;
 
 public final class HelsinkiLinkedEventsApi extends Api {
@@ -54,14 +56,18 @@ public final class HelsinkiLinkedEventsApi extends Api {
     }
 
     private void searchPlaces(String query, @NonNull final Consumer<PaginatedResult<Location>> locationConsumer) {
-        call("/search/?type=place&input=" + query, new CheckedConsumer<String, JSONException>() {
-            @Override
-            public void accept(String response) throws JSONException {
-                final PaginatedResult<Location> items = JSON_DESERIALIZER.fromJson(response, paginatedLocationsType);
+        if (query.length() == 0) {
+            locationConsumer.accept(new PaginatedResult<Location>(new Location[0], new MetaInformation()));
+        } else {
+            call("/search/?type=place&input=" + query, new CheckedConsumer<String, JSONException>() {
+                @Override
+                public void accept(String response) throws JSONException {
+                    final PaginatedResult<Location> items = JSON_DESERIALIZER.fromJson(response, paginatedLocationsType);
 
-                locationConsumer.accept(items);
-            }
-        });
+                    locationConsumer.accept(items);
+                }
+            });
+        }
     }
 
     public void autoCompletePlaces(String query, @NonNull final Consumer<AutoCompleteItem[]> itemsConsumer) {
@@ -83,14 +89,20 @@ public final class HelsinkiLinkedEventsApi extends Api {
     }
 
     private void searchKeywords(String query, @NonNull final Consumer<PaginatedResult<Keyword>> keywordConsumer) {
-        call("/keyword?text=" + query, new CheckedConsumer<String, JSONException>() {
-            @Override
-            public void accept(String response) throws JSONException {
-                final PaginatedResult<Keyword> keywords = JSON_DESERIALIZER.fromJson(response, paginatedKeywordsType);
+        if (query.length() == 0) {
+            keywordConsumer.accept(new PaginatedResult<Keyword>(new Keyword[0], new MetaInformation()));
+        } else {
+            query = Uri.encode(query);
 
-                keywordConsumer.accept(keywords);
-            }
-        });
+            call("/keyword?text=" + query, new CheckedConsumer<String, JSONException>() {
+                @Override
+                public void accept(String response) throws JSONException {
+                    final PaginatedResult<Keyword> keywords = JSON_DESERIALIZER.fromJson(response, paginatedKeywordsType);
+
+                    keywordConsumer.accept(keywords);
+                }
+            });
+        }
     }
 
     private void searchAllKeywords(final Stack<String> keywords, final ArrayList<Keyword> foundKeywords, @NonNull final Consumer<Keyword[]> keywordConsumer) {
