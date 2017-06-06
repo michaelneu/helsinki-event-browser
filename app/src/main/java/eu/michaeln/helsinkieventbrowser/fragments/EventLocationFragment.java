@@ -20,8 +20,8 @@ import eu.michaeln.helsinkieventbrowser.adapters.DetailsPagerAdapter;
 import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
-public class LocationFragment extends EventFragmentBase implements OnMapReadyCallback {
-    public LocationFragment() {
+public class EventLocationFragment extends EventFragmentBase implements OnMapReadyCallback {
+    public EventLocationFragment() {
         super(R.layout.fragment_location);
     }
 
