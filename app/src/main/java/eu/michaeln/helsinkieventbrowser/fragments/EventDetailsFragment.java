@@ -67,10 +67,10 @@ public class EventDetailsFragment extends Fragment {
             final StringBuilder offerBuilder = new StringBuilder();
 
             for (Offer offer : eventOffers) {
-                offerBuilder.append(offer.getPrice().resolve());
-                offerBuilder.append(": \n");
                 offerBuilder.append(offer.getDescription().resolve());
-                offerBuilder.append("\n\n");
+                offerBuilder.append(": ");
+                offerBuilder.append(offer.getPrice().resolve());
+                offerBuilder.append("\n");
             }
 
             offers.setText(offerBuilder.toString());
