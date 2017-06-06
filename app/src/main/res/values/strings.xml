@@ -19,10 +19,10 @@
         \n
         \n
 
-        1)\t Keyword based search
+        1)\t Search events
         \n
 
-        2)\t Autocomplete in search
+        2)\t Autocomplete in search and filters
         \n
 
         3)\t Custom adapters
@@ -47,4 +47,8 @@
     </string>
     <string name="show_event_filters">Show event filters</string>
     <string name="hide_event_filters">Hide event filters</string>
+    <string name="place">Place</string>
+    <string name="keyword">Keyword</string>
+    <string name="date">Date</string>
+    <string name="today">today</string>
 </resources>

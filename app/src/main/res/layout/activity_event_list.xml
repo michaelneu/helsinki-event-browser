@@ -50,7 +50,7 @@
                 android:id="@+id/keyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Keyword" />
+                android:hint="@string/keyword" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -65,7 +65,7 @@
                 android:id="@+id/place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Place" />
+                android:hint="@string/place" />
 
         </android.support.design.widget.TextInputLayout>
 

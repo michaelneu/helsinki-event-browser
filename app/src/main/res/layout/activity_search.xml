@@ -38,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@+id/find_button"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:hint="Keyword"/>
+            android:hint="@string/keyword"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -63,12 +63,12 @@
             app:layout_constraintTop_toBottomOf="@+id/find_button"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:hint="Place" />
+            android:hint="@string/place" />
 
     </android.support.design.widget.TextInputLayout>
 
     <TextView
-        android:text="Date"
+        android:text="@string/date"
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
 
     <TextView
         android:id="@+id/date"
-        android:text="today"
+        android:text="@string/today"
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         android:layout_width="wrap_content"
