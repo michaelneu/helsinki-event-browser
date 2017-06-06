@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 
 import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
+import eu.michaeln.helsinkieventbrowser.parcels.CalendarParcel;
 
 public class SearchActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_DATE = "date",

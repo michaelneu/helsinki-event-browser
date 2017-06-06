@@ -27,6 +27,7 @@ import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.entities.Keyword;
 import eu.michaeln.helsinkieventbrowser.entities.Location;
 import eu.michaeln.helsinkieventbrowser.entities.PaginatedResult;
+import eu.michaeln.helsinkieventbrowser.parcels.CalendarParcel;
 import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
 public class EventListActivity extends AppCompatActivity {

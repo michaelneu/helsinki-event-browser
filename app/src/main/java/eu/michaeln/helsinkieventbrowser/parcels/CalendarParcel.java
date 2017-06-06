@@ -1,4 +1,4 @@
-package eu.michaeln.helsinkieventbrowser;
+package eu.michaeln.helsinkieventbrowser.parcels;
 
 import android.os.Parcel;
 import android.os.Parcelable;
