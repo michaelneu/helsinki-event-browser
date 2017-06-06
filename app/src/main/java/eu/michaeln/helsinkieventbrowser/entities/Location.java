@@ -5,6 +5,10 @@ public final class Location {
     private Position position;
     private LocalizedString name, street_address, address_locality, telephone;
 
+    public String getId() {
+        return id;
+    }
+
     public Position getPosition() {
         return position;
     }
@@ -13,11 +17,11 @@ public final class Location {
         return name;
     }
 
-    public LocalizedString getStreet_address() {
+    public LocalizedString getStreetAddress() {
         return street_address;
     }
 
-    public LocalizedString getAddress_locality() {
+    public LocalizedString getAddressLocality() {
         return address_locality;
     }
 
