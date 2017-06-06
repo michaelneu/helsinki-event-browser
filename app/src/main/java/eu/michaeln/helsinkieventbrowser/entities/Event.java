@@ -1,7 +1,6 @@
 package eu.michaeln.helsinkieventbrowser.entities;
 
 import java.util.Date;
-import java.util.List;
 
 public final class Event {
     private String id;
@@ -16,6 +15,8 @@ public final class Event {
     private Date start_time, end_time;
 
     private Keyword[] keywords;
+
+    private Image[] images;
 
     public String getId() {
         return id;
@@ -51,5 +52,9 @@ public final class Event {
 
     public Keyword[] getKeywords() {
         return keywords;
+    }
+
+    public Image[] getImages() {
+        return images;
     }
 }

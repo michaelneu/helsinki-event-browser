@@ -1,6 +1,5 @@
 package eu.michaeln.helsinkieventbrowser;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.function.Consumer;
 
-import eu.michaeln.helsinkieventbrowser.adapters.AutoCompleteItemAdapter;
 import eu.michaeln.helsinkieventbrowser.adapters.EventListAdapter;
 import eu.michaeln.helsinkieventbrowser.api.HelsinkiLinkedEventsApi;
 import eu.michaeln.helsinkieventbrowser.entities.AutoCompleteItem;
@@ -29,6 +27,7 @@ import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.entities.Keyword;
 import eu.michaeln.helsinkieventbrowser.entities.Location;
 import eu.michaeln.helsinkieventbrowser.entities.PaginatedResult;
+import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
 public class EventListActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -141,7 +140,7 @@ public class EventListActivity extends AppCompatActivity {
                 if (event != null) {
                     final Intent detailsActivityIntent = new Intent(EventListActivity.this, EventDetailsActivity.class);
 
-                    detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_ID, event.getId());
+                    detailsActivityIntent.putExtra(EventDetailsActivity.INTENT_EXTRA_EVENT, new EventParcel(event));
 
                     startActivity(detailsActivityIntent);
                 }

@@ -1,37 +1,55 @@
 package eu.michaeln.helsinkieventbrowser.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import eu.michaeln.helsinkieventbrowser.entities.Event;
 import eu.michaeln.helsinkieventbrowser.fragments.EventDetailsFragment;
 import eu.michaeln.helsinkieventbrowser.fragments.LocationFragment;
+import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
 public class DetailsPagerAdapter extends FragmentPagerAdapter {
-    private final static int FRAGMENT_DETAILS = 0,
+    public static final String ARGUMENT_EVENT = "event";
+
+    private static final int FRAGMENT_DETAILS = 0,
                              FRAGMENT_LOCATION = 1,
                              FRAGMENT_IMAGES = 2;
 
-    private final String id;
+    private final Event event;
 
-    public DetailsPagerAdapter(FragmentManager fm, String id) {
+    public DetailsPagerAdapter(FragmentManager fm, Event event) {
         super(fm);
 
-        this.id = id;
+        this.event = event;
     }
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment;
+
         switch (position) {
             case FRAGMENT_LOCATION:
-                return new LocationFragment();
+                fragment = new LocationFragment();
+                break;
 
             case FRAGMENT_IMAGES:
-                return new EventDetailsFragment();
+                fragment = new EventDetailsFragment();
+                break;
 
             default:
-                return new EventDetailsFragment();
+                fragment = new EventDetailsFragment();
+                break;
         }
+
+        final Bundle arguments = new Bundle();
+
+        arguments.putParcelable(ARGUMENT_EVENT, new EventParcel(event));
+
+        fragment.setArguments(arguments);
+
+        return fragment;
     }
 
     @Override

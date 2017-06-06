@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import eu.michaeln.helsinkieventbrowser.adapters.DetailsPagerAdapter;
+import eu.michaeln.helsinkieventbrowser.entities.Event;
+import eu.michaeln.helsinkieventbrowser.parcels.EventParcel;
 
 public class EventDetailsActivity extends AppCompatActivity {
-    public static final String INTENT_EXTRA_ID = "id";
+    public static final String INTENT_EXTRA_EVENT = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +21,12 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         final Intent callingIntent = getIntent();
 
-        if (callingIntent.hasExtra(INTENT_EXTRA_ID)) {
-            final String id = callingIntent.getStringExtra(INTENT_EXTRA_ID);
+        if (callingIntent.hasExtra(INTENT_EXTRA_EVENT)) {
+            final EventParcel parcel = callingIntent.getParcelableExtra(INTENT_EXTRA_EVENT);
+            final Event event = parcel.getEvent();
 
             final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            final DetailsPagerAdapter adapter = new DetailsPagerAdapter(getSupportFragmentManager(), id);
+            final DetailsPagerAdapter adapter = new DetailsPagerAdapter(getSupportFragmentManager(), event);
 
             pager.setAdapter(adapter);
 
